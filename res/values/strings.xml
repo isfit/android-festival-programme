@@ -1,0 +1,8 @@
+<resources>
+
+    <string name="app_name">ISFiT 2013</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_programme_list">ProgrammeList</string>
+
+</resources>
