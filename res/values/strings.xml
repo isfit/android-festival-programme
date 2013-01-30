@@ -4,5 +4,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_programme_list">ProgrammeList</string>
+    <string name="events_url">http://events.isfit.org/events/iosapi.json</string>
 
 </resources>
