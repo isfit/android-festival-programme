@@ -19,7 +19,7 @@ public class Event {
     // optional
     private final String frontImageURL, bodyAsHTML, festivalDay;
     private final List<EventDate> eventDates;
-    private final int priceMember, priceOther;
+    private final String priceMember, priceOther;
     private final boolean allFestival;
 
     /**
@@ -51,7 +51,7 @@ public class Event {
         private EventPlace eventPlace;
         private EventType eventType;
         private String title, frontImageURL, bodyAsHTML, festivalDay;
-        private int priceMember, priceOther;
+        private String priceMember, priceOther;
         private boolean allFestival;
 
         public Builder(String title, EventPlace eventPlace, EventType eventType) {
@@ -80,12 +80,12 @@ public class Event {
             return this;
         }
 
-        public Builder setPriceMember(int priceMember) {
+        public Builder setPriceMember(String priceMember) {
             this.priceMember = priceMember;
             return this;
         }
 
-        public Builder setPriceOther(int priceOther) {
+        public Builder setPriceOther(String priceOther) {
             this.priceOther = priceOther;
             return this;
         }
@@ -132,8 +132,8 @@ public class Event {
                     .setEventDates(eventDates)
                     .setFestivalDay(eventJSON.getString("festival_day"))
                     .setFrontImageURL(eventJSON.getString("front_image_url"))
-                    .setPriceMember(eventJSON.getInt("price_member"))
-                    .setPriceOther(eventJSON.getInt("price_other"))
+                    .setPriceMember(eventJSON.getString("price_member"))
+                    .setPriceOther(eventJSON.getString("price_other"))
                     .build();
 
         } catch (JSONException e) {

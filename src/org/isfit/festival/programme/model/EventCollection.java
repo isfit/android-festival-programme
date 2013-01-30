@@ -43,6 +43,7 @@ public class EventCollection {
     }
     
     private void updateEventsFromJSON(JSONArray array) {
+        Support.checkNotNull(array);
         List<Event> events = new ArrayList<Event>();
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -77,7 +78,6 @@ public class EventCollection {
                 conn.setConnectTimeout(15000 /* milliseconds */);
                 conn.setRequestMethod("GET");
                 conn.addRequestProperty("Accept", "application/json");
-                conn.setDoInput(true);
                 conn.connect();
                 
                 int responseCode = conn.getResponseCode();
@@ -93,10 +93,8 @@ public class EventCollection {
                 
                 stream = conn.getInputStream();
                 
-                // Just do a double-take to verify that the stream is in fact open
-                Support.checkNotNull(stream);
+                String response = stringify(stream).trim();
                 
-                String response = stringify(stream);
                 array = new JSONArray(response);
                 
             } catch (MalformedURLException e) {
@@ -122,7 +120,6 @@ public class EventCollection {
                     }
                 }
             }
-            
             return array;
         }
 

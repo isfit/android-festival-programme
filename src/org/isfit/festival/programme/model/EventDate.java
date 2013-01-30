@@ -25,8 +25,11 @@ public class EventDate {
     public static EventDate fromJSON(JSONObject eventDataJSON) throws JSONException {
         // TODO parse JSONObject.
         // all_festival is most likely null, make this false if it is!
-        
-        boolean allFestival = eventDataJSON.getBoolean("all_festival");
+        String allFestivalString = eventDataJSON.getString("all_festival");
+        boolean allFestival = false;
+        if (allFestivalString.equals("true")) {
+            allFestival = true;
+        }
         String startAt = eventDataJSON.getString("start_at");
         String endAt = eventDataJSON.getString("end_at");
         
