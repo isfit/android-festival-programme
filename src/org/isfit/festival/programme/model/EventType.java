@@ -42,6 +42,7 @@ public enum EventType {
         default:
             Log.d(Support.DEBUG, "No matching EventType found. EventType was: "
                     + id);
+            eventType = eventType.OTHER;
             break;
         }
         return eventType;
