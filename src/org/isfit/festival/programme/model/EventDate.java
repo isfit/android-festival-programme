@@ -1,5 +1,6 @@
 package org.isfit.festival.programme.model;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventDate {
@@ -21,9 +22,14 @@ public class EventDate {
 
 
 
-    public static EventDate fromJSON(JSONObject eventDataJSON) {
+    public static EventDate fromJSON(JSONObject eventDataJSON) throws JSONException {
         // TODO parse JSONObject.
         // all_festival is most likely null, make this false if it is!
-        return null;
+        
+        boolean allFestival = eventDataJSON.getBoolean("all_festival");
+        String startAt = eventDataJSON.getString("start_at");
+        String endAt = eventDataJSON.getString("end_at");
+        
+        return new EventDate(allFestival, startAt, endAt);
     }
 }
