@@ -3,21 +3,28 @@ package org.isfit.festival.programme;
 import java.util.List;
 
 import org.isfit.festival.programme.model.Event;
+import org.isfit.festival.programme.model.OnTaskCompleted;
+import org.isfit.festival.programme.model.Support;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class EventListViewAdapter extends ArrayAdapter<EventListItem> {
+public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements OnClickListener {
     
     private int layoutResourceId;
     private List<EventListItem> events;
+    private ListView list;
 
     public EventListViewAdapter(Context context, int layoutResourceId,
             List<EventListItem> events) {
@@ -31,6 +38,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> {
         View row = convertView;
         EventHolder holder = null;
         EventListItem eventListItem = events.get(position);
+        list = (ListView) parent;
         
         if (eventListItem.isDateHeader()) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
@@ -43,7 +51,6 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> {
 
             holder.eventTitle.setText(((EventDateHeaderItem) eventListItem).getFestivalDay());
             holder.eventTitle.setClickable(false);
-            holder.eventTitle.setTextColor(Color.RED);
         } else {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
@@ -51,11 +58,15 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> {
             holder = new EventHolder();
             holder.frontImage = (ImageView)row.findViewById(R.id.eventImage);
             holder.eventTitle = (TextView)row.findViewById(R.id.eventTitle);
+            holder.event = (Event) eventListItem;
             
             row.setTag(holder);
             
             holder.eventTitle.setText(((Event) eventListItem).getTitle());
-            holder.frontImage.setImageBitmap(((Event) eventListItem).getImageBitmap());
+            holder.frontImage.setImageBitmap(((Event) eventListItem).getImageBitmap(holder.frontImage));
+            
+            row.setOnClickListener(this);
+            row.setBackgroundColor(holder.event.getEventType().getColor());
             
         }
         return row;
@@ -63,8 +74,18 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> {
     }
     
     static class EventHolder {
+        Event event;
         ImageView frontImage;
         TextView eventTitle;
+    }
+
+    @Override
+    public void onClick(View v) {
+        Event event = ((EventHolder)v.getTag()).event;
+        Log.d(Support.DEBUG, "Event clicked: " + event.getTitle());
+        Intent eventIntent = new Intent(getContext(), EventActivity.class);
+        eventIntent.putExtra(EventActivity.ARG_EVENT_ID, event.getId());
+        getContext().startActivity(eventIntent);
     }
 
 }

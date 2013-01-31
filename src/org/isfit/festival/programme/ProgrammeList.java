@@ -36,8 +36,7 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_programme_list, menu);
-        return true;
+        return false;
     }
 
     @Override
@@ -59,9 +58,6 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
      */
     public List<EventListItem> getSortedEventListItems(List<Event> events) {
         List<EventListItem> sortedEventListItems = new ArrayList<EventListItem>();
-        
-        
-        
         
         // Yes... We need to sort it, we use buckets! buckeeeeet.
         // Each bucket contains all events from that day. We use the human-readable string for this (convenience)

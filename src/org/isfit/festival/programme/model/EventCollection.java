@@ -10,7 +10,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.isfit.festival.programme.R;
 import org.json.JSONArray;
@@ -23,6 +25,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 public class EventCollection {
+    public static final Map<Integer, Event> EVENTS_MAP = new HashMap<Integer, Event>();
+    
     private List<Event> events;
     private Context context;
     private OnTaskCompleted listener;
@@ -57,7 +61,15 @@ public class EventCollection {
             e.printStackTrace();
         }
         this.events = events;
+        populateEventsMap();
         listener.onTaskCompleted();
+    }
+    
+    private void populateEventsMap() {
+        EVENTS_MAP.clear();
+        for (Event event : events) {
+            EVENTS_MAP.put(event.getId(), event);
+        }
     }
 
     private class EventsDownloader extends

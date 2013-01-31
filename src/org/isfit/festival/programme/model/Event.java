@@ -1,5 +1,7 @@
 package org.isfit.festival.programme.model;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +11,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
 public class Event implements EventListItem {
 
@@ -17,12 +22,14 @@ public class Event implements EventListItem {
     private final EventPlace eventPlace;
     private final EventType eventType;
     private final String title;
+    private final int id;
 
     // optional
     private final String frontImageURL, bodyAsHTML, festivalDay;
     private final List<EventDate> eventDates;
     private final String priceMember, priceOther;
     private final boolean allFestival;
+    private Bitmap frontImage;
 
     /**
      * Creates an immutable instance of Event. This is handy since we are
@@ -36,6 +43,7 @@ public class Event implements EventListItem {
      * @param builder
      */
     private Event(Builder builder) {
+        this.id = builder.id;
         this.eventPlace = builder.eventPlace;
         this.eventType = builder.eventType;
         this.title = builder.title;
@@ -55,8 +63,10 @@ public class Event implements EventListItem {
         private String title, frontImageURL, bodyAsHTML, festivalDay;
         private String priceMember, priceOther;
         private boolean allFestival;
+        private int id;
 
-        public Builder(String title, EventPlace eventPlace, EventType eventType) {
+        public Builder(int id,String title, EventPlace eventPlace, EventType eventType) {
+            this.id = id;
             this.title = title;
             this.eventPlace = eventPlace;
             this.eventType = eventType;
@@ -191,7 +201,8 @@ public class Event implements EventListItem {
                 eventDates.add(eventDate);
             }
             String title = eventJSON.getString("title");
-            Builder eventBuilder = new Builder(title, eventPlace, eventType);
+            int id = eventJSON.getInt("id");
+            Builder eventBuilder = new Builder(id, title, eventPlace, eventType);
             event = eventBuilder.setBodyAsHTML(eventJSON.getString("body_as_html"))
                     .setEventDates(eventDates)
                     .setFestivalDay(eventJSON.getString("festival_day"))
@@ -209,9 +220,16 @@ public class Event implements EventListItem {
 
 
 
-    public Bitmap getImageBitmap() {
-        // TODO fetch image from server as bitmap. Perhaps fall back to empty?
-        return null;
+    public Bitmap getImageBitmap(ImageView frontImage) {
+        if (this.frontImage == null) {
+            // TODO check internet connection
+            BitmapDownloader bitmapDownloader = new BitmapDownloader();
+            bitmapDownloader.setImageView(frontImage);
+            bitmapDownloader.execute(frontImageURL);
+            return null;
+        } else {
+            return this.frontImage;            
+        }
     }
 
 
@@ -219,6 +237,50 @@ public class Event implements EventListItem {
     @Override
     public boolean isDateHeader() {
         return false;
+    }
+
+
+
+    public String getEventTime() {
+        return "21:00";
+    }
+    
+    public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
+        
+        private ImageView imageView;
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            String url = params[0];
+            return getBitmapFromUrl(url);
+        }
+        
+        public void setImageView(ImageView imageView) {
+            this.imageView = imageView;
+        }
+        
+        private Bitmap getBitmapFromUrl(String url) {
+            try {
+                URL newurl = new URL("http://events.isfit.org" + url);
+                Log.d(Support.DEBUG, "Downloading image...");
+                return BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            frontImage = result;
+            Log.d(Support.DEBUG, "imageview: "+imageView);
+            imageView.setImageBitmap(result);
+            super.onPostExecute(result);
+        }
+    }
+
+    public int getId() {
+        return this.id;
     }
 
 }
