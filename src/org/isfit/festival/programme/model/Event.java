@@ -3,13 +3,15 @@ package org.isfit.festival.programme.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.isfit.festival.programme.EventListItem;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
-public class Event {
+public class Event implements EventListItem {
 
     // required
     private final EventPlace eventPlace;
@@ -100,6 +102,68 @@ public class Event {
         }
 
     }
+    
+    public EventPlace getEventPlace() {
+        return eventPlace;
+    }
+
+
+
+    public EventType getEventType() {
+        return eventType;
+    }
+
+
+
+    public String getTitle() {
+        return title;
+    }
+
+
+
+    public String getFrontImageURL() {
+        return frontImageURL;
+    }
+
+
+
+    public String getBodyAsHTML() {
+        return bodyAsHTML;
+    }
+
+
+    /**
+     * Human-readable festival day formatting as string
+     */
+    public String getFestivalDay() {
+        return festivalDay;
+    }
+
+
+
+    public List<EventDate> getEventDates() {
+        return eventDates;
+    }
+
+
+
+    public String getPriceMember() {
+        return priceMember;
+    }
+
+
+
+    public String getPriceOther() {
+        return priceOther;
+    }
+
+
+
+    public boolean isAllFestival() {
+        return allFestival;
+    }
+
+
 
     /**
      * Parses a JSONObject into an Event, with all required subclasses where
@@ -141,6 +205,20 @@ public class Event {
             e.printStackTrace();
         }
         return event;
+    }
+
+
+
+    public Bitmap getImageBitmap() {
+        // TODO fetch image from server as bitmap. Perhaps fall back to empty?
+        return null;
+    }
+
+
+
+    @Override
+    public boolean isDateHeader() {
+        return false;
     }
 
 }

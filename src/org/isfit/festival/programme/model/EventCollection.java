@@ -25,10 +25,12 @@ import android.util.Log;
 public class EventCollection {
     private List<Event> events;
     private Context context;
+    private OnTaskCompleted listener;
 
-    public EventCollection(Context context) {
+    public EventCollection(Context context, OnTaskCompleted listener) {
         // Calls update to populate list upon creation.
         this.context = context;
+        this.listener = listener;
         this.update();
     }
 
@@ -55,6 +57,7 @@ public class EventCollection {
             e.printStackTrace();
         }
         this.events = events;
+        listener.onTaskCompleted();
     }
 
     private class EventsDownloader extends
@@ -146,6 +149,10 @@ public class EventCollection {
             updateEventsFromJSON(array);
         }
 
+    }
+
+    public List<Event> getEvents() {
+        return this.events;
     }
 
 }
