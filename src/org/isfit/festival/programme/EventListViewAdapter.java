@@ -40,6 +40,12 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
         EventListItem eventListItem = events.get(position);
         list = (ListView) parent;
         
+        if (row != null && 
+                !eventListItem.isDateHeader() && 
+                ((EventHolder)row.getTag()).event == (Event) eventListItem) {
+            return convertView;
+        }
+        
         if (eventListItem.isDateHeader()) {
             LayoutInflater inflater = ((Activity) getContext()).getLayoutInflater();
             row = inflater.inflate(R.layout.listview_date_header_row, parent, false);
@@ -84,6 +90,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
         Event event = ((EventHolder)v.getTag()).event;
         Log.d(Support.DEBUG, "Event clicked: " + event.getTitle());
         Intent eventIntent = new Intent(getContext(), EventActivity.class);
+        eventIntent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         eventIntent.putExtra(EventActivity.ARG_EVENT_ID, event.getId());
         getContext().startActivity(eventIntent);
     }
