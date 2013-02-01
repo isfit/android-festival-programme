@@ -35,4 +35,11 @@ public class EventDate {
         
         return new EventDate(allFestival, startAt, endAt);
     }
+
+
+
+    public String getStartAt() {
+        // TODO Auto-generated method stub
+        return startAt;
+    }
 }

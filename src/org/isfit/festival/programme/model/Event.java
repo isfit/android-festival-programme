@@ -1,14 +1,18 @@
 package org.isfit.festival.programme.model;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.isfit.festival.programme.EventListItem;
+import org.isfit.festival.programme.util.Support;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -220,16 +224,8 @@ public class Event implements EventListItem {
 
 
 
-    public Bitmap getImageBitmap(ImageView frontImage) {
-        if (this.frontImage == null) {
-            // TODO check internet connection
-            BitmapDownloader bitmapDownloader = new BitmapDownloader();
-            bitmapDownloader.setImageView(frontImage);
-            bitmapDownloader.execute(frontImageURL);
-            return null;
-        } else {
-            return this.frontImage;            
-        }
+    public void loadImageBitmap(ImageView frontImageView) {
+        ImageLoader.getInstance().displayImage("http://events.isfit.org" + frontImageURL, frontImageView);
     }
 
 
@@ -242,43 +238,9 @@ public class Event implements EventListItem {
 
 
     public String getEventTime() {
-        return "21:00";
+        return eventDates.get(0).getStartAt();
     }
     
-    public class BitmapDownloader extends AsyncTask<String, String, Bitmap> {
-        
-        private ImageView imageView;
-
-        @Override
-        protected Bitmap doInBackground(String... params) {
-            String url = params[0];
-            return getBitmapFromUrl(url);
-        }
-        
-        public void setImageView(ImageView imageView) {
-            this.imageView = imageView;
-        }
-        
-        private Bitmap getBitmapFromUrl(String url) {
-            try {
-                URL newurl = new URL("http://events.isfit.org" + url);
-                Log.d(Support.DEBUG, "Downloading image...");
-                return BitmapFactory.decodeStream(newurl.openConnection().getInputStream());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-        
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            frontImage = result;
-            Log.d(Support.DEBUG, "imageview: "+imageView);
-            imageView.setImageBitmap(result);
-            super.onPostExecute(result);
-        }
-    }
-
     public int getId() {
         return this.id;
     }

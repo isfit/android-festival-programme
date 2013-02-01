@@ -6,6 +6,8 @@
     <string name="title_activity_programme_list">ProgrammeList</string>
     <string name="events_url">http://events.isfit.org/events/androidapi.json</string>
     <string name="events_base_url">http://events.isfit.org</string>
+    <string name="no_network">No network connection. This application requires an active internet connection on first use. Please enable network and relaunch the application.</string>
     <string name="title_activity_event">EventActivity</string>
+    <string name="title_activity_no_network">NoNetworkActivity</string>
 
 </resources>

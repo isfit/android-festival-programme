@@ -1,6 +1,7 @@
 package org.isfit.festival.programme.model;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,7 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.isfit.festival.programme.FestivalProgramme;
 import org.isfit.festival.programme.R;
+import org.isfit.festival.programme.util.OnTaskCompleted;
+import org.isfit.festival.programme.util.Support;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,8 +47,19 @@ public class EventCollection {
      */
     public void update() {
         // TODO check active internet connection here. Fall back to local copy if not.
-        EventsDownloader downloader = new EventsDownloader();
-        downloader.execute("");
+        if (FestivalProgramme.getInstance().isConnected() &&
+                (FestivalProgramme.eventsJSON == null || FestivalProgramme.eventsJSON.equals(""))) {
+            EventsDownloader downloader = new EventsDownloader();
+            downloader.execute("");            
+        } else {
+            EventsFetcher fetcher = new EventsFetcher();
+            fetcher.execute("");
+            // Update if we are on a network and wifi
+            if (FestivalProgramme.getInstance().isConnected() && FestivalProgramme.getInstance().isWifi()) {
+                EventsDownloader downloader = new EventsDownloader();
+                downloader.execute("");
+            }
+        }
 
     }
     
@@ -62,6 +77,7 @@ public class EventCollection {
         }
         this.events = events;
         populateEventsMap();
+        Log.d(Support.DEBUG, "Events populated: " + getEvents().size());
         listener.onTaskCompleted();
     }
     
@@ -69,6 +85,27 @@ public class EventCollection {
         EVENTS_MAP.clear();
         for (Event event : events) {
             EVENTS_MAP.put(event.getId(), event);
+        }
+    }
+    
+    private class EventsFetcher extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+            Log.d(Support.DEBUG, "Cache hit: " + FestivalProgramme.eventsJSON.length());
+            JSONArray array = null;
+            try {
+                array = new JSONArray(FestivalProgramme.eventsJSON);
+                Log.d(Support.DEBUG, "JSONArray cache hit: " + array.length());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return array;
+        }
+         @Override
+        protected void onPostExecute(JSONArray result) {
+            super.onPostExecute(result);
+            updateEventsFromJSON(result);
         }
     }
 
@@ -109,6 +146,9 @@ public class EventCollection {
                 stream = conn.getInputStream();
                 
                 String response = stringify(stream).trim();
+                
+                // Write file to cache
+                FestivalProgramme.getInstance().writetoEventCache(response);
                 
                 array = new JSONArray(response);
                 

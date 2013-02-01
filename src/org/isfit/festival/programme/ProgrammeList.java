@@ -13,10 +13,13 @@ import java.util.TreeMap;
 import org.isfit.festival.programme.model.Event;
 import org.isfit.festival.programme.model.EventCollection;
 import org.isfit.festival.programme.model.FestivalDay;
-import org.isfit.festival.programme.model.OnTaskCompleted;
+import org.isfit.festival.programme.util.OnTaskCompleted;
+import org.isfit.festival.programme.util.Support;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ListView;
@@ -29,6 +32,14 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_programme_list);
+        
+     // Check network if eventsJSON == null
+        if (FestivalProgramme.eventsJSON == null && !FestivalProgramme.getInstance().isConnected()) {
+            Log.d(Support.DEBUG, "No cache and no network. Launch Toast!");
+            Intent intent = new Intent(this, NoNetworkActivity.class);
+            startActivity(intent);
+            return;
+        }
         
         eventCollection = new EventCollection(getApplicationContext(), this);
         
@@ -57,6 +68,7 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
      * @return A sorted grouping of events with nice headers for seperation. EventListItem is an abstraction for all of this.
      */
     public List<EventListItem> getSortedEventListItems(List<Event> events) {
+        Support.checkNotNull(events);
         List<EventListItem> sortedEventListItems = new ArrayList<EventListItem>();
         
         // Yes... We need to sort it, we use buckets! buckeeeeet.

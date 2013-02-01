@@ -3,8 +3,8 @@ package org.isfit.festival.programme;
 import java.util.List;
 
 import org.isfit.festival.programme.model.Event;
-import org.isfit.festival.programme.model.OnTaskCompleted;
-import org.isfit.festival.programme.model.Support;
+import org.isfit.festival.programme.util.OnTaskCompleted;
+import org.isfit.festival.programme.util.Support;
 
 import android.app.Activity;
 import android.content.Context;
@@ -63,7 +63,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
             row.setTag(holder);
             
             holder.eventTitle.setText(((Event) eventListItem).getTitle());
-            holder.frontImage.setImageBitmap(((Event) eventListItem).getImageBitmap(holder.frontImage));
+            ((Event) eventListItem).loadImageBitmap(holder.frontImage);
             
             row.setOnClickListener(this);
             row.setBackgroundColor(holder.event.getEventType().getColor());
