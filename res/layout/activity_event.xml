@@ -1,105 +1,109 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/event"
-    android:layout_width="fill_parent"
-    android:layout_height="match_parent" >
+    android:id="@+id/scrollView1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content" >
 
-    <ImageView
-        android:id="@+id/eventImageBig"
+    <RelativeLayout
+        android:id="@+id/event"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:src="@drawable/ic_action_search"
-        android:adjustViewBounds="true"
-        android:scaleType="centerCrop" />
+        android:layout_height="wrap_content" >
 
-    <LinearLayout
-        android:id="@+id/eventDescription"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/eventImageBig"
-        android:orientation="vertical"
-        android:padding="@dimen/standardPadding" >
+        <ImageView
+            android:id="@+id/eventImageBig"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_action_search" />
 
         <LinearLayout
+            android:id="@+id/eventDescription"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eventImageBig"
+            android:orientation="vertical"
+            android:padding="@dimen/standardPadding" >
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
 
-                <TextView
-                    android:id="@+id/eventDateHuman"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/eventDateHuman"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="February 07., Monday"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/eventTimeFromTo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text="February 07., Monday" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:orientation="vertical"
+                    android:paddingLeft="@dimen/standardPadding" >
 
-                <TextView
-                    android:id="@+id/eventTimeFromTo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
+                    <TextView
+                        android:id="@+id/eventTypeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Concert"
+                        android:textColor="#FFFFFF" />
 
+                    <TextView
+                        android:id="@+id/EventPriceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0,-/0,-"
+                        android:textColor="#FFFFFF" />
+
+                    <TextView
+                        android:id="@+id/eventPlaceText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Storsalen, Samfundet"
+                        android:textColor="#FFFFFF" />
+                </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="right"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/standardPadding" >
-
-                <TextView
-                    android:id="@+id/eventTypeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text="Concert" />
-
-                <TextView
-                    android:id="@+id/EventPriceText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text="0,-/0,-" />
-
-                <TextView
-                    android:id="@+id/eventPlaceText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#FFFFFF"
-                    android:text="Storsalen, Samfundet" />
-            </LinearLayout>
+            <TextView
+                android:id="@+id/eventTitleBig"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:longClickable="false"
+                android:maxLines="@integer/title_lines_max"
+                android:text="Jonas Alaska and The Trondheim Soloists"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="#FFFFFF" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/eventTitleBig"
+            android:id="@+id/eventBody"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:longClickable="false"
-            android:maxLines="@integer/title_lines_max"
-            android:text="Jonas Alaska and The Trondheim Soloists"
-            android:textColor="#FFFFFF"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
-    </LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/eventDescription"
+            android:padding="@dimen/standardPadding"
+            android:text="Lots of text"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/eventBody"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/eventDescription"
-        android:padding="@dimen/standardPadding"
-        android:scrollbarAlwaysDrawVerticalTrack="true"
-        android:text="Lots of text"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-</RelativeLayout>
+</ScrollView>

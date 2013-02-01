@@ -70,7 +70,6 @@ public class EventActivity extends Activity {
             
             TextView eventBody = ((TextView) findViewById(R.id.eventBody));
             eventBody.setText(Html.fromHtml(event.getBodyAsHTML()));
-            eventBody.setMovementMethod(new ScrollingMovementMethod());
             this.setTitle(event.getTitle());
 
         }
