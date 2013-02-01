@@ -16,6 +16,8 @@ import org.isfit.festival.programme.model.FestivalDay;
 import org.isfit.festival.programme.util.OnTaskCompleted;
 import org.isfit.festival.programme.util.Support;
 
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
+
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -52,8 +54,11 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
 
     @Override
     public void onTaskCompleted() {
-        // TODO update view
         ListView listView = (ListView) findViewById(R.id.eventListView);
+        boolean pauseOnScroll = false; // or true
+        boolean pauseOnFling = true; // or false
+        PauseOnScrollListener listener = new PauseOnScrollListener(pauseOnScroll, pauseOnFling);
+        listView.setOnScrollListener(listener);
         List<EventListItem> events = getSortedEventListItems(eventCollection.getEvents());
         EventListViewAdapter eventListViewAdapter = new EventListViewAdapter(
                 this,
