@@ -12,6 +12,8 @@ import org.isfit.festival.programme.util.OnTaskCompleted;
 import org.isfit.festival.programme.util.Support;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
@@ -26,6 +28,7 @@ public class EventActivity extends Activity {
     private Event event;
     private ImageView eventImageBig;
 
+    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
