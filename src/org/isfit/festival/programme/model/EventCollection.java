@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -142,6 +143,7 @@ public class EventCollection {
         Set<Entry<FestivalDay, List<Event>>> entrySet = bucketEvents.entrySet();
         for (Entry<FestivalDay, List<Event>> entry : entrySet) {
             sortedEventListItems.add(new EventDateHeaderItem(entry.getKey()));
+            Collections.sort(entry.getValue());
             sortedEventListItems.addAll(entry.getValue());
         }
         
