@@ -97,8 +97,7 @@ public class RubyTime implements Comparable<RubyTime> {
         return formattedTimeBuilder.toString();
     }
 
-    public int compareTo(RubyTime anotherStartTime) {
-        // TODO Auto-generated method stub
-        return 0;
+    public int compareTo(RubyTime another) {
+        return this.calendar.compareTo(another.calendar);
     }
 }
