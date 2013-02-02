@@ -20,6 +20,9 @@ import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -38,9 +41,7 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
         
      // Check network if eventsJSON == null
         if (FestivalProgramme.eventsJSON == null && !FestivalProgramme.getInstance().isConnected()) {
-            Log.d(Support.DEBUG, "No cache and no network. Launch Toast!");
-            Intent intent = new Intent(this, NoNetworkActivity.class);
-            startActivity(intent);
+            launchDialog();
             return;
         }
         this.listView = (ListView) findViewById(R.id.eventListView);
@@ -68,6 +69,24 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
     private void setOnScrollListener(boolean pauseOnScroll, boolean pauseOnFling) {
         PauseOnScrollListener listener = new PauseOnScrollListener(pauseOnScroll, pauseOnFling);
         listView.setOnScrollListener(listener);
+    }
+    
+    private void launchDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.no_network)
+        .setTitle("No network available");
+        
+        alertDialogBuilder.setNeutralButton("Ok, I will enable network", new DialogInterface.OnClickListener() {
+            
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+        
     }
     
     
