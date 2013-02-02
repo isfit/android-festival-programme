@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import org.isfit.festival.programme.model.Event;
 import org.isfit.festival.programme.model.EventCollection;
@@ -61,6 +62,7 @@ public class EventActivity extends Activity {
                 Calendar date;
                 try {
                     date = Support.toCalendar(event.getEventTime());
+                    date.setTimeZone(TimeZone.getTimeZone("GMT"));
                     int minute = date.get(Calendar.MINUTE);
                     String actualMinute = "" + minute;
                     if (minute < 10) {
