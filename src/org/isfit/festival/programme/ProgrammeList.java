@@ -56,7 +56,7 @@ public class ProgrammeList extends Activity implements OnTaskCompleted {
     public void onTaskCompleted() {
         ListView listView = (ListView) findViewById(R.id.eventListView);
         boolean pauseOnScroll = false; // or true
-        boolean pauseOnFling = true; // or false
+        boolean pauseOnFling = false; // or false
         PauseOnScrollListener listener = new PauseOnScrollListener(pauseOnScroll, pauseOnFling);
         listView.setOnScrollListener(listener);
         List<EventListItem> events = getSortedEventListItems(eventCollection.getEvents());
