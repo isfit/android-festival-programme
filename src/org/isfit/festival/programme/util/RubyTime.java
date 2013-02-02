@@ -19,7 +19,7 @@ import android.widget.TextView;
  * For now this only supports parsing UTC. It is largely untested.
  * 
  */
-public class RubyTime {
+public class RubyTime implements Comparable<RubyTime> {
     
     private Calendar calendar;
 
@@ -85,6 +85,8 @@ public class RubyTime {
         StringBuilder formattedTimeBuilder = new StringBuilder();
         formattedTimeBuilder.append(calendar.get(Calendar.HOUR_OF_DAY));
         
+        formattedTimeBuilder.append(':');
+        
         int minute = calendar.get(Calendar.MINUTE);
         String zeroPaddedMinute = "" + minute;
         if (minute < 10) {
@@ -93,5 +95,10 @@ public class RubyTime {
         formattedTimeBuilder.append(zeroPaddedMinute);
         
         return formattedTimeBuilder.toString();
+    }
+
+    public int compareTo(RubyTime anotherStartTime) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 }

@@ -3,10 +3,12 @@ package org.isfit.festival.programme.model;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.isfit.festival.programme.EventListItem;
+import org.isfit.festival.programme.util.RubyTime;
 import org.isfit.festival.programme.util.Support;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,7 +22,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-public class Event implements EventListItem {
+public class Event implements EventListItem, Comparable<Event> {
 
     // required
     private final EventPlace eventPlace;
@@ -243,6 +245,20 @@ public class Event implements EventListItem {
     
     public int getId() {
         return this.id;
+    }
+
+
+
+    @Override
+    public int compareTo(Event another) {
+        RubyTime thisStartTime;
+        try {
+            thisStartTime = new RubyTime(this.getEventTime());
+            RubyTime anotherStartTime = new RubyTime(another.getEventTime());
+            return thisStartTime.compareTo(anotherStartTime);
+        } catch (ParseException e) {
+            return 0;
+        }
     }
 
 }
