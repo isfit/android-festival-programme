@@ -10,6 +10,7 @@ import java.util.TimeZone;
 import org.isfit.festival.programme.model.Event;
 import org.isfit.festival.programme.model.EventCollection;
 import org.isfit.festival.programme.util.OnTaskCompleted;
+import org.isfit.festival.programme.util.RubyTime;
 import org.isfit.festival.programme.util.Support;
 
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -58,21 +60,13 @@ public class EventActivity extends Activity {
             eventTypetext.setText(event.getEventType().toString());
             
             if (!event.isAllFestival()) {
-                // This is why I hate java...
-                Calendar date;
                 try {
-                    date = Support.toCalendar(event.getEventTime());
-                    date.setTimeZone(TimeZone.getTimeZone("GMT"));
-                    int minute = date.get(Calendar.MINUTE);
-                    String actualMinute = "" + minute;
-                    if (minute < 10) {
-                        actualMinute = "0" + minute;
-                    }
+                    RubyTime dateTime = new RubyTime(event.getEventTime());
+                    dateTime.setTimeZone(TimeZone.getTimeZone("GMT"));
                     ((TextView) findViewById(R.id.eventTimeFromTo))
-                            .setText(date.get(Calendar.HOUR_OF_DAY) + ":"
-                                    + actualMinute);
+                            .setText(dateTime.toTimeAsString());
                 } catch (ParseException e) {
-                    // TODO Auto-generated catch b lock
+                    Log.d(Support.DEBUG, "Time could not be parsed.");
                     e.printStackTrace();
                 }
             }
