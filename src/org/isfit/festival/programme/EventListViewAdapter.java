@@ -10,6 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
         EventHolder holder = null;
         EventListItem eventListItem = events.get(position);
         list = (ListView) parent;
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Apertura-BoldCondensed.otf");
         
         if (row != null && 
                 !eventListItem.isDateHeader() && 
@@ -52,6 +54,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
             
             holder = new EventHolder();
             holder.eventTitle = (TextView)row.findViewById(R.id.humanReadableDateHeader);
+            holder.eventTitle.setTypeface(tf);
             
             row.setTag(holder);
 
@@ -65,6 +68,8 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
             holder.frontImage = (ImageView)row.findViewById(R.id.eventImage);
             holder.eventTitle = (TextView)row.findViewById(R.id.eventTitle);
             holder.event = (Event) eventListItem;
+            
+            holder.eventTitle.setTypeface(tf);
             
             row.setTag(holder);
             
@@ -93,6 +98,7 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
         eventIntent.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         eventIntent.putExtra(EventActivity.ARG_EVENT_ID, event.getId());
         getContext().startActivity(eventIntent);
+        ((Activity) getContext()).overridePendingTransition(R.anim.right_slide_in, R.anim.left_slide_out);
     }
 
 }

@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 public class EventCollection {
     public static final Map<Integer, Event> EVENTS_MAP = new HashMap<Integer, Event>();
@@ -199,6 +200,7 @@ public class EventCollection {
         protected void onPostExecute(JSONArray array) {
             super.onPostExecute(array);
             updateEventsFromJSON(array);
+            Toast.makeText(context, "Events have been updated", Toast.LENGTH_SHORT).show();
         }
 
     }

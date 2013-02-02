@@ -29,7 +29,8 @@
 
             <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content" 
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -41,7 +42,7 @@
                         android:id="@+id/eventDateHuman"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="February 07., Monday"
+                        android:text=""
                         android:textColor="#FFFFFF" />
 
                     <TextView
@@ -64,36 +65,38 @@
                         android:id="@+id/eventTypeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Concert"
+                        android:text=""
                         android:textColor="#FFFFFF" />
 
                     <TextView
                         android:id="@+id/EventPriceText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0,-/0,-"
+                        android:text=""
                         android:textColor="#FFFFFF" />
 
                     <TextView
                         android:id="@+id/eventPlaceText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Storsalen, Samfundet"
+                        android:text=""
                         android:textColor="#FFFFFF" />
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/eventTitleBig"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:clickable="false"
-                android:longClickable="false"
-                android:maxLines="@integer/title_lines_max"
-                android:text="Jonas Alaska and The Trondheim Soloists"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#FFFFFF" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/eventTitleBig"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#AA222222"
+            android:padding="@dimen/standardPadding"
+            android:clickable="false"
+            android:longClickable="false"
+            android:maxLines="@integer/title_lines_max"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="#FFFFFF" />
 
         <TextView
             android:id="@+id/eventBody"
@@ -102,7 +105,7 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@+id/eventDescription"
             android:padding="@dimen/standardPadding"
-            android:text="Lots of text"
+            android:text=""
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 
