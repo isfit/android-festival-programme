@@ -1,5 +1,11 @@
 package org.isfit.festival.programme.util;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -15,6 +21,23 @@ public class Support {
         if (object == null) {
             throw new NullPointerException("The object is null");
         }
+    }
+    
+    /**
+     * Stringifies an InputStream so we can handle it easier.
+     * 
+     * @param stream
+     *            The {@link InputStream} to stringify
+     * @return A stringified JSON response.
+     * @throws IOException
+     * @throws UnsupportedEncodingException
+     */
+    public static String stringify(InputStream stream) throws IOException,
+            UnsupportedEncodingException {
+        Reader reader = null;
+        reader = new InputStreamReader(stream, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(reader);
+        return bufferedReader.readLine();
     }
     
     public static boolean hasFroyo() {

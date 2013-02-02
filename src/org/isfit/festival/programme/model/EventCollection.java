@@ -1,12 +1,7 @@
 package org.isfit.festival.programme.model;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,7 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
+import org.isfit.festival.programme.EventDateHeaderItem;
+import org.isfit.festival.programme.EventListItem;
 import org.isfit.festival.programme.FestivalProgramme;
 import org.isfit.festival.programme.R;
 import org.isfit.festival.programme.util.OnTaskCompleted;
@@ -27,27 +28,44 @@ import android.content.Context;
 import android.content.res.Resources.NotFoundException;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.util.SparseArray;
 import android.widget.Toast;
 
+/**
+ * A collection of {@link Event}s
+ * <p>
+ * (dagingaa):
+ * Instead of having an EventsMap as a static final thingy, we should have this
+ * as a singleton-thingy. We really don't need several {@link EventCollection}s
+ * I think.
+ * </p>
+ */
 public class EventCollection {
-    public static final Map<Integer, Event> EVENTS_MAP = new HashMap<Integer, Event>();
+    public static final SparseArray<Event> EVENTS_MAP = new SparseArray<Event>();
     
     private List<Event> events;
     private Context context;
     private OnTaskCompleted listener;
 
     public EventCollection(Context context, OnTaskCompleted listener) {
-        // Calls update to populate list upon creation.
         this.context = context;
         this.listener = listener;
+        // Calls update to populate list upon creation.
         this.update();
+    }
+    
+    public List<Event> getEvents() {
+        return this.events;
     }
 
     /**
-     * Updates the list of events with fresh data
+     * Updates the list of events. This will check for an active internet
+     * connection and the presence of the cache. It will then fetch the cache
+     * and download a new copy if it has internet access.
+     * 
+     * (dagingaa) This check should be done in EventsFetcher later.
      */
     public void update() {
-        // TODO check active internet connection here. Fall back to local copy if not.
         if (FestivalProgramme.getInstance().isConnected() &&
                 (FestivalProgramme.eventsJSON == null || FestivalProgramme.eventsJSON.equals(""))) {
             EventsDownloader downloader = new EventsDownloader();
@@ -64,6 +82,10 @@ public class EventCollection {
 
     }
     
+    /**
+     * Takes a JSONArray of events and parses it into POJOs
+     * @param array a JSONArray containing events as JSON
+     */
     private void updateEventsFromJSON(JSONArray array) {
         Support.checkNotNull(array);
         List<Event> events = new ArrayList<Event>();
@@ -89,6 +111,49 @@ public class EventCollection {
         }
     }
     
+    /**
+     * Returns sorted events with groupings and headers for our poor listview to render. This is mostly a hack.
+     * @param events Events to be sorted
+     * @return A sorted grouping of events with nice headers for seperation. EventListItem is an abstraction for all of this.
+     */
+    public List<EventListItem> getSortedEventListItems() {
+        Support.checkNotNull(events);
+        List<EventListItem> sortedEventListItems = new ArrayList<EventListItem>();
+        
+        // Yes... We need to sort it, we use buckets! buckeeeeet.
+        // Each bucket contains all events from that day. We use the human-readable string for this (convenience)
+        // A special case must be made for "All festival"
+        
+        SortedMap<FestivalDay, List<Event>> bucketEvents = new TreeMap<FestivalDay, List<Event>>();
+        for (Event event : events) {
+            FestivalDay festivalDay = new FestivalDay(event.getFestivalDay());
+            if (bucketEvents.containsKey(festivalDay)) {
+                bucketEvents.get(festivalDay).add(event);
+            } 
+            else {
+                bucketEvents.put(festivalDay, new ArrayList<Event>());
+                bucketEvents.get(festivalDay).add(event);
+            }
+        }
+        
+        // This will fail, and sort the dates pretty much wrong. Hopefully the ids are sorted by day.
+        // We can do this better server-side anyways, we are only dependent on that the first instance of
+        // a day is in order.
+        Set<Entry<FestivalDay, List<Event>>> entrySet = bucketEvents.entrySet();
+        for (Entry<FestivalDay, List<Event>> entry : entrySet) {
+            sortedEventListItems.add(new EventDateHeaderItem(entry.getKey()));
+            sortedEventListItems.addAll(entry.getValue());
+        }
+        
+        return sortedEventListItems;
+        
+    }
+    
+    /**
+     * Fetches events from cache. 
+     * 
+     *  dagingaa: We should combine the two classes below into their own class responsible for fetching eventsJSON
+     */
     private class EventsFetcher extends AsyncTask<String, String, JSONArray> {
 
         @Override
@@ -146,8 +211,8 @@ public class EventCollection {
                 
                 stream = conn.getInputStream();
                 
-                String response = stringify(stream).trim();
-                
+                String response = Support.stringify(stream).trim();
+                 
                 // Write file to cache
                 FestivalProgramme.getInstance().writetoEventCache(response);
                 
@@ -179,23 +244,6 @@ public class EventCollection {
             return array;
         }
 
-        /**
-         * Stringifies an InputStream so we can handle it easier.
-         * 
-         * @param stream
-         *            The {@link InputStream} to stringify
-         * @return A stringified JSON response.
-         * @throws IOException
-         * @throws UnsupportedEncodingException
-         */
-        public String stringify(InputStream stream) throws IOException,
-                UnsupportedEncodingException {
-            Reader reader = null;
-            reader = new InputStreamReader(stream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            return bufferedReader.readLine();
-        }
-
         @Override
         protected void onPostExecute(JSONArray array) {
             super.onPostExecute(array);
@@ -204,9 +252,4 @@ public class EventCollection {
         }
 
     }
-
-    public List<Event> getEvents() {
-        return this.events;
-    }
-
 }
