@@ -7,9 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -180,8 +178,6 @@ public class EventCollection {
     private class EventsDownloader extends
             AsyncTask<String, String, JSONArray> {
 
-        private OnTaskCompleted listener;
-
         @Override
         protected JSONArray doInBackground(String... params) {
             return getJSONFromServer();
@@ -205,7 +201,6 @@ public class EventCollection {
                 // Validate successful response
                 if (responseCode/100 != 2) {
                     Log.d(Support.DEBUG + "_server", "Response code was: " + responseCode);
-                    // TODO perhaps throw something nice here?
                     return null;
                 }
                 

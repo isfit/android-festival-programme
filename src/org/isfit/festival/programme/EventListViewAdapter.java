@@ -3,13 +3,11 @@ package org.isfit.festival.programme;
 import java.util.List;
 
 import org.isfit.festival.programme.model.Event;
-import org.isfit.festival.programme.util.OnTaskCompleted;
 import org.isfit.festival.programme.util.Support;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,14 +16,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements OnClickListener {
     
     private int layoutResourceId;
     private List<EventListItem> events;
-    private ListView list;
 
     public EventListViewAdapter(Context context, int layoutResourceId,
             List<EventListItem> events) {
@@ -39,7 +35,6 @@ public class EventListViewAdapter extends ArrayAdapter<EventListItem> implements
         View row = convertView;
         EventHolder holder = null;
         EventListItem eventListItem = events.get(position);
-        list = (ListView) parent;
         Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Apertura-BoldCondensed.otf");
         
         if (row != null && 

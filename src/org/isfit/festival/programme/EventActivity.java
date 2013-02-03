@@ -1,25 +1,18 @@
 package org.isfit.festival.programme;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 import java.util.TimeZone;
 
 import org.isfit.festival.programme.model.Event;
 import org.isfit.festival.programme.model.EventCollection;
-import org.isfit.festival.programme.util.OnTaskCompleted;
 import org.isfit.festival.programme.util.RubyTime;
 import org.isfit.festival.programme.util.Support;
 
 import android.os.Bundle;
 import android.annotation.SuppressLint;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.ImageView;

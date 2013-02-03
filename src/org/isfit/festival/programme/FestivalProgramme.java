@@ -13,11 +13,9 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap.CompressFormat;
 import android.net.ConnectivityManager;
 import android.util.Log;
-import android.widget.Toast;
 
 public class FestivalProgramme extends Application {
 
@@ -47,8 +45,7 @@ public class FestivalProgramme extends Application {
             StringBuffer fileContent = new StringBuffer("");
 
             byte[] buffer = new byte[1024];
-            int length;
-            while ((length = fis.read(buffer)) != -1) {
+            while ((fis.read(buffer)) != -1) {
                 fileContent.append(new String(buffer));
             }
             eventsJSON = fileContent.toString();

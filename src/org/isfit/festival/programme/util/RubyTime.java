@@ -4,12 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.TimeZone;
-
-import org.isfit.festival.programme.R;
-
-import android.widget.TextView;
 
 /**
  * This class will hopefully grow into something similar to Time in Ruby. For
@@ -54,14 +49,14 @@ public class RubyTime implements Comparable<RubyTime> {
      * @return A RubyTime object containing the time at creation.
      */
     public static RubyTime now() {
-        RubyTime time = new RubyTime(GregorianCalendar.getInstance());
+        RubyTime time = new RubyTime(Calendar.getInstance());
         return time;
     }
 
     /** Transform ISO 8601 string to Calendar. */
     private Calendar toCalendar(final String iso8601string)
             throws ParseException {
-        Calendar calendar = GregorianCalendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         String s = iso8601string.replace("Z", "+00:00");
         try {
             s = s.substring(0, 22) + s.substring(23);
@@ -97,6 +92,7 @@ public class RubyTime implements Comparable<RubyTime> {
         return formattedTimeBuilder.toString();
     }
 
+    @Override
     public int compareTo(RubyTime another) {
         return this.calendar.compareTo(another.calendar);
     }

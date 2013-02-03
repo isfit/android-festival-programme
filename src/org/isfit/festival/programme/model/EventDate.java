@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 public class EventDate {
     
-    private final boolean allFestival;
     private final String startAt, endAt; // Perhaps use some kind of date representation here?
 
     /**
@@ -15,7 +14,6 @@ public class EventDate {
      * @param endAt
      */
     private EventDate(boolean allFestival, String startAt, String endAt) {
-        this.allFestival = allFestival;
         this.startAt = startAt;
         this.endAt = endAt;
     }
@@ -36,10 +34,12 @@ public class EventDate {
         return new EventDate(allFestival, startAt, endAt);
     }
 
-
-
     public String getStartAt() {
         // TODO Auto-generated method stub
         return startAt;
+    }
+    
+    public String getEndAt() {
+        return endAt;
     }
 }

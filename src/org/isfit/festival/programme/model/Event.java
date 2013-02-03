@@ -1,8 +1,5 @@
 package org.isfit.festival.programme.model;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +13,6 @@ import org.json.JSONObject;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -35,7 +29,6 @@ public class Event implements EventListItem, Comparable<Event> {
     private final List<EventDate> eventDates;
     private final String priceMember, priceOther;
     private final boolean allFestival;
-    private Bitmap frontImage;
 
     /**
      * Creates an immutable instance of Event. This is handy since we are
@@ -206,6 +199,7 @@ public class Event implements EventListItem, Comparable<Event> {
                 EventDate eventDate = EventDate.fromJSON(eventDateJSON);
                 eventDates.add(eventDate);
             }
+            
             String title = eventJSON.getString("title");
             int id = eventJSON.getInt("id");
             Builder eventBuilder = new Builder(id, title, eventPlace, eventType);
@@ -215,6 +209,7 @@ public class Event implements EventListItem, Comparable<Event> {
                     .setFrontImageURL(eventJSON.getString("front_image_url"))
                     .setPriceMember(eventJSON.getString("price_member"))
                     .setPriceOther(eventJSON.getString("price_other"))
+                    .setAllFestival(eventJSON.optBoolean("all_festival"))
                     .build();
 
         } catch (JSONException e) {

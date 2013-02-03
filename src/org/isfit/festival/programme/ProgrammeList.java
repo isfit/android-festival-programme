@@ -1,32 +1,15 @@
 package org.isfit.festival.programme;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import org.isfit.festival.programme.model.Event;
 import org.isfit.festival.programme.model.EventCollection;
-import org.isfit.festival.programme.model.FestivalDay;
 import org.isfit.festival.programme.util.OnTaskCompleted;
-import org.isfit.festival.programme.util.Support;
-
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.widget.ListView;
 
 public class ProgrammeList extends Activity implements OnTaskCompleted {
